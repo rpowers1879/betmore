@@ -10,7 +10,7 @@ import { NextResponse } from "next/server";
 const DEXSCREENER_BASE = "https://api.dexscreener.com";
 const RUGCHECK_BASE = "https://api.rugcheck.xyz/v1";
 const RPC_URL =
-  process.env.NEXT_PUBLIC_SOLANA_RPC || "https://api.mainnet-beta.solana.com";
+  process.env.SOLANA_RPC || "https://api.mainnet-beta.solana.com";
 
 // Fetch top holders + supply from Solana RPC
 async function fetchHolderData(mintAddress) {
