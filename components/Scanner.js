@@ -28,6 +28,7 @@ import { fmt, fmtNum, pct, ageDays } from "@/lib/format";
 import ScoreRing from "./ScoreRing";
 import ScoreBar from "./ScoreBar";
 import TierBadge from "./TierBadge";
+import ShareCard from "./ShareCard";
 
 export default function Scanner() {
   const { publicKey, connected } = useWallet();
@@ -112,6 +113,24 @@ export default function Scanner() {
       setLoading(false);
     }
   }, [address, tier]);
+
+  // Auto-scan from URL param ?scan=
+  const [autoScan, setAutoScan] = useState(false);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const scanAddr = params.get("scan");
+    if (scanAddr && !result && !loading) {
+      setAddress(scanAddr);
+      setAutoScan(true);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (autoScan && address) {
+      setAutoScan(false);
+      handleScan();
+    }
+  }, [autoScan, address, handleScan]);
 
   // AI reasoning
   async function fetchAiReasoning(pair, rugData, scores, holderData) {
@@ -593,6 +612,11 @@ export default function Scanner() {
               View on DexScreener
             </a>
           )}
+
+          {/* Share Card */}
+          <div className="animate-fade-up" style={{ animationDelay: "0.55s" }}>
+            <ShareCard result={result} />
+          </div>
         </div>
       )}
 
