@@ -146,7 +146,7 @@ export default function Scanner() {
               <span className="text-text-primary">MORE</span>
             </h1>
             <p className="font-mono text-[10px] text-text-muted tracking-[0.15em] uppercase">
-              Memecoin Confidence Scanner
+              Scanner
             </p>
           </div>
           <WalletMultiButton />
