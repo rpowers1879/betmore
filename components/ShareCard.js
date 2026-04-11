@@ -28,6 +28,17 @@ export default function ShareCard({ result }) {
   async function handleShare() {
     setGenerating(true);
     try {
+      // Temporarily make the card visible for html2canvas
+      const wrapper = cardRef.current.parentElement;
+      wrapper.style.position = "fixed";
+      wrapper.style.left = "0";
+      wrapper.style.top = "0";
+      wrapper.style.zIndex = "-1";
+      wrapper.style.opacity = "1";
+      wrapper.style.overflow = "visible";
+      wrapper.style.height = "auto";
+      wrapper.style.pointerEvents = "none";
+
       const html2canvas = (await import("html2canvas")).default;
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#0a0b0d",
@@ -36,7 +47,17 @@ export default function ShareCard({ result }) {
         logging: false,
         width: 1200,
         height: 630,
+        windowWidth: 1200,
+        windowHeight: 630,
       });
+
+      // Hide it again
+      wrapper.style.position = "absolute";
+      wrapper.style.left = "-9999px";
+      wrapper.style.top = "-9999px";
+      wrapper.style.zIndex = "";
+      wrapper.style.overflow = "hidden";
+      wrapper.style.height = "0";
 
       const blob = await new Promise((r) => canvas.toBlob(r, "image/png"));
       const file = new File([blob], `betmore-${ticker}.png`, {
@@ -79,6 +100,9 @@ export default function ShareCard({ result }) {
           position: "absolute",
           left: "-9999px",
           top: "-9999px",
+          overflow: "hidden",
+          height: 0,
+          pointerEvents: "none",
         }}
       >
         <div
